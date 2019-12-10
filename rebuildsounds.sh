@@ -8,13 +8,14 @@ NODEBIN=/usr/bin/node
 POLLYJS=/opt/aws-nodejs/polly.js
 GENPATH=/opt/aws-nodejs/custom-asterisk
 MYSQLFILE=/opt/aws-nodejs/custom-asterisk/recordings.sql
-MYSQLSOUNDPATH=custom
 
 if [ ${GENSQL} -eq 1 -a -f "${MYSQLFILE}" ]; then
 	echo "MySQL file already exists and will be overwritten"
 	exit
 elif [ ${GENSQL} -eq 1 ]; then
-	echo "use asterisk;" > "${MYSQLFILE}"
+	echo "USE \`asterisk\`;" > "${MYSQLFILE}"
+	echo "#Uncomment to create an additional record if this hasn't already been done, or do manually in admin" >> "${MYSQLFILE}"
+	echo "#INSERT INTO \`soundlang_customlangs\` (`language`, `description`) VALUES ('en_Salli', 'Polly-Salli');" >> "${MYSQLFILE}"
 fi
 
 OLDIFS=$IFS
@@ -92,7 +93,7 @@ while IFS= read -r SOUND ; do
 			else
 				if [ ${GENSQL} -eq 1 ]; then
 					printf -v SANITIZED "%q" "$TEXT"
-					echo "INSERT INTO \`recordings\` (\`displayname\`,\`filename\`,\`description\`,\`fcode\`,\`fcode_pass\`) values ('${FILENAME}','${MYSQLSOUNDPATH}/${FILENAME}','${SANITIZED}',0,'en');" >> "${MYSQLFILE}"
+					echo "INSERT INTO \`recordings\` (\`displayname\`,\`filename\`,\`description\`,\`fcode\`,\`fcode_pass\`) values ('${FILENAME}','${FILENAME}','${SANITIZED}',0,'en');" >> "${MYSQLFILE}"
 				fi
 
 				echo "Generating ulaw file"
