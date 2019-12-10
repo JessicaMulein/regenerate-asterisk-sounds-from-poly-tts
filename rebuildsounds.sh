@@ -4,6 +4,17 @@ stringContain() { [ -z "$1" ] || { [ -z "${2##*$1*}" ] && [ -n "$2" ];};}
 NODEBIN=/usr/bin/node
 POLLYJS=/opt/aws-nodejs/polly.js
 GENPATH=/opt/aws-nodejs/custom-asterisk
+GENSQL=1
+MYSQLFILE=/opt/aws-nodejs/custom-asterisk/recordings.sql
+MYSQLSOUNDPATH=en/custom
+
+if [ ${GENSQL} -eq 1 -a -f "${MYSQLFILE}" ]; then
+	echo "MySQL file already exists and will be overwritten"
+	exit
+else if [ ${GENSQL} -eq 1 ]; then
+	echo "use asterisk;" > "${MYSQLFILE}"
+fi
+
 OLDIFS=$IFS
 SOUNDLIST="/var/lib/asterisk/sounds/en/core-sounds-en.txt"
 while IFS= read -r SOUND ; do
@@ -73,6 +84,11 @@ while IFS= read -r SOUND ; do
 				echo "Error in /tmp/xerr.tmp"
 				break
 			else
+				if [ {$GENSQL} -eq 1 ]; then
+					printf -v SANITIZED "%q" "$TEXT"
+					echo "INSERT INTO RECORDINGS (\`displayname\`,\`filename\`,\`description\`,\`fcode\`,\`fcode_pass\`) values ('${FILENAME}','${MYSQLSOUNDPATH}/${FILENAME}','${SANITIZED}',0,'');" >> "${MYSQLFILE}"
+				fi
+
 				echo "Generating ulaw file"
 				INFILE="${GENPATH}/${FILENAME}.wav"
 				OUTFILE="${GENPATH}/${FILENAME}.ulaw"
