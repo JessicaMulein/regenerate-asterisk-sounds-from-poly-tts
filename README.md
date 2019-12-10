@@ -9,6 +9,8 @@ An additional polly.js has been added to generate files on demand from FreePBX u
 * Run rebuildsounds.sh
 * Verify and move all files from /opt/aws-nodejs/custom-asterisk to /var/lib/asterisk/sounds/en/custom/ and enable custom sounds.
 * There maybe a quick variable swap, or there may be a mass mysql import into recordings. (https://mangolassi.it/topic/18903/mass-upload-sound-files-into-freepbx/2)
+* Otherwise, you may try replacing your system sounds- but you will need to copy in a few (see the SKIPPED ones from the log output)
+* Fully generated Salli set at https://github.com/jessica-mulein/asterisk-custom-poly-sounds
 
 Expects /usr/bin/node
 
