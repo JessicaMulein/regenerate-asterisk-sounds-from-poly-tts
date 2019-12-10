@@ -1,8 +1,6 @@
-# AWS SDK for Node.js Sample Project
+# Reprofile your Asterisk Completely using Polly
 
-A simple Node.js application illustrating usage of the AWS SDK for Node.js.
-
-An additional polly.js has been added to generate files on demand from FreePBX using the Text to Speech Engine module (https://community.freepbx.org/t/tts-engine-custom-amazon-polly-24-languages/40763).
+An additional polly.js has been added to the original project to generate files on demand from FreePBX using the Text to Speech Engine module (https://community.freepbx.org/t/tts-engine-custom-amazon-polly-24-languages/40763).
 
 * Place this whole repo in /opt/aws-nodejs.
 * Fill in your options in polly.js.
@@ -14,6 +12,9 @@ An additional polly.js has been added to generate files on demand from FreePBX u
 * Fully generated Salli set at https://github.com/jessica-mulein/asterisk-custom-poly-sounds (minus SKIPPED)
 
 Expects /usr/bin/node
+
+Essentially this lets you change a little configuration about Polly's voice and suddenly your PBX sounds very different.
+
 
 ## Requirements
 
