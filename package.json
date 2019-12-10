@@ -1,6 +1,8 @@
 {
     "dependencies": {
         "aws-sdk": ">= 2.0.9",
-        "node-uuid": ">= 1.4.1"
+        "child_process": "^1.0.2",
+        "node-uuid": ">= 1.4.1",
+        "optimist": "^0.6.1"
     }
 }
