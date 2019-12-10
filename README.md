@@ -7,7 +7,8 @@ An additional polly.js has been added to generate files on demand from FreePBX u
 * Place this whole repo in /opt/aws-nodejs.
 * Fill in your options in polly.js.
 * Run rebuildsounds.sh
-* Verify and move all files from /opt/aws-nodejs/custom-asterisk to /var/lib/asterisk/sounds/custom/ and enable custom sounds
+* Verify and move all files from /opt/aws-nodejs/custom-asterisk to /var/lib/asterisk/sounds/en/custom/ and enable custom sounds.
+* There maybe a quick variable swap, or there may be a mass mysql import into recordings. (https://mangolassi.it/topic/18903/mass-upload-sound-files-into-freepbx/2)
 
 Expects /usr/bin/node
 
