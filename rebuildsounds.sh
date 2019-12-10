@@ -72,6 +72,11 @@ while IFS= read -r SOUND ; do
 				echo "${ERROR}"
 				echo "Error in /tmp/xerr.tmp"
 				break
+			else
+				echo "Generating ulaw file"
+				INFILE="${GENPATH}/${FILENAME}.wav"
+				OUTFILE="${GENPATH}/${FILENAME}.ulaw"
+				asterisk -x "file convert ${INFILE} ${OUTFILE}"
 			fi
 		fi
 	fi
