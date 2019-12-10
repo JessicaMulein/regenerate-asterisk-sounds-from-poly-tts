@@ -2,6 +2,15 @@
 
 A simple Node.js application illustrating usage of the AWS SDK for Node.js.
 
+An additional polly.js has been added to generate files on demand from FreePBX using the Text to Speech Engine module (https://community.freepbx.org/t/tts-engine-custom-amazon-polly-24-languages/40763).
+
+* Place this whole repo in /opt/aws-nodejs.
+* Fill in your options in polly.js.
+* Run rebuildsounds.sh
+* Verify and move all files from /opt/aws-nodejs/custom-asterisk to /var/lib/asterisk/sounds/custom/ and enable custom sounds
+
+Expects /usr/bin/node
+
 ## Requirements
 
 The only requirement of this application is the Node Package Manager. All other
