@@ -20,7 +20,7 @@ while IFS= read -r SOUND ; do
 	fi
 	# the core sounds file is A:B format, the extra file is different apparently.
 	if [ $HASCOLON -eq 1 ]; then
-		FILENAME=$(echo "$SOUND" | sed -E 's/^(.+?):.*$/\1/g' 2>/dev/null)
+		FILENAME=$(echo "$SOUND" | sed -E 's/^([^:]+):(.*?)/\1/' 2>/dev/null)
 		TEXT=$(echo "$SOUND" | sed -E 's/^.+?:\s*(.*$)/\1/g' 2>/dev/null)
 		if [ "${FILENAME}" != "" -a "${TEXT}" != "" ];  then
 			REGEX="^<.*>$"
@@ -36,6 +36,11 @@ while IFS= read -r SOUND ; do
 
 			# some have paths eg digits/9
 			mkdir -p `dirname "$GENPATH/${FILENAME}"`
+
+			if [ -f "${GENPATH}/${FILENAME}.wav" ]; then
+				echo "Skipping EXISTING ${FILENAME}"
+				continue
+			fi
 
 			echo "Generating ${FILENAME} with prompt:"
 			echo "$TEXT"
