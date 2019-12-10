@@ -86,7 +86,7 @@ while IFS= read -r SOUND ; do
 			else
 				if [ ${GENSQL} -eq 1 ]; then
 					printf -v SANITIZED "%q" "$TEXT"
-					echo "INSERT INTO RECORDINGS (\`displayname\`,\`filename\`,\`description\`,\`fcode\`,\`fcode_pass\`) values ('${FILENAME}','${MYSQLSOUNDPATH}/${FILENAME}','${SANITIZED}',0,'');" >> "${MYSQLFILE}"
+					echo "INSERT INTO `recordings` (\`displayname\`,\`filename\`,\`description\`,\`fcode\`,\`fcode_pass\`) values ('${FILENAME}','${MYSQLSOUNDPATH}/${FILENAME}','${SANITIZED}',0,'');" >> "${MYSQLFILE}"
 				fi
 
 				echo "Generating ulaw file"
