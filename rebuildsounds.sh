@@ -11,7 +11,7 @@ MYSQLSOUNDPATH=en/custom
 if [ ${GENSQL} -eq 1 -a -f "${MYSQLFILE}" ]; then
 	echo "MySQL file already exists and will be overwritten"
 	exit
-else if [ ${GENSQL} -eq 1 ]; then
+elif [ ${GENSQL} -eq 1 ]; then
 	echo "use asterisk;" > "${MYSQLFILE}"
 fi
 
@@ -84,7 +84,7 @@ while IFS= read -r SOUND ; do
 				echo "Error in /tmp/xerr.tmp"
 				break
 			else
-				if [ {$GENSQL} -eq 1 ]; then
+				if [ ${GENSQL} -eq 1 ]; then
 					printf -v SANITIZED "%q" "$TEXT"
 					echo "INSERT INTO RECORDINGS (\`displayname\`,\`filename\`,\`description\`,\`fcode\`,\`fcode_pass\`) values ('${FILENAME}','${MYSQLSOUNDPATH}/${FILENAME}','${SANITIZED}',0,'');" >> "${MYSQLFILE}"
 				fi
