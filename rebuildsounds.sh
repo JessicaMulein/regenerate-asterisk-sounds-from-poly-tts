@@ -20,10 +20,15 @@ while IFS= read -r SOUND ; do
 	fi
 	# the core sounds file is A:B format, the extra file is different apparently.
 	if [ $HASCOLON -eq 1 ]; then
-		FILENAME=$(echo "$SOUND" | sed -E 's/^(.*):.*$/\1/g' 2>/dev/null)
-		TEXT=$(echo "$SOUND" | sed -E 's/^.*:\s*(.*$)/\1/g' 2>/dev/null)
+		FILENAME=$(echo "$SOUND" | sed -E 's/^(.+?):.*$/\1/g' 2>/dev/null)
+		TEXT=$(echo "$SOUND" | sed -E 's/^.+?:\s*(.*$)/\1/g' 2>/dev/null)
 		if [ "${FILENAME}" != "" -a "${TEXT}" != "" ];  then
 			REGEX="^<.*>$"
+			if [[ "${TEXT}" =~ ${REGEX} ]]; then
+				echo "Skipping DIRECTION line: ${SOUND}"
+				continue
+			fi
+			REGEX="^\[.*\]$"
 			if [[ "${TEXT}" =~ ${REGEX} ]]; then
 				echo "Skipping DIRECTION line: ${SOUND}"
 				continue
@@ -35,15 +40,14 @@ while IFS= read -r SOUND ; do
 			echo "Generating ${FILENAME} with prompt:"
 			echo "$TEXT"
 
-			HADERROR=0
 			# exec with leading braces, but capture the output
 			echo -n "... ["
 			RESULT=$(${NODEBIN} ${POLLYJS} --mp3=${GENPATH}/${FILENAME}.mp3 --text="${TEXT}" --wav=${GENPATH}/${FILENAME} 2> /tmp/xerr.tmp)
-			if [ $? -eq 0 ]; then
-				echo -n "OK"
-			else
+			ENDSTATUS=$?
+			if [ $ENDSTATUS -ne 0 ]; then
 				echo -n "ERROR"
-				HADERROR=1
+			else
+				echo -n "OK"
 			fi
 			echo "]"
 			# enclose brace
@@ -58,7 +62,7 @@ while IFS= read -r SOUND ; do
 			echo "${RESULT}${ERROR}"
 		
 			# if exit code was an error too, stop so we don't continue looping when there's auth issues	
-			if [ $HADERROR -eq 1 ]; then
+			if [ $ENDSTATUS -ne 0 ]; then
 				echo "!!!!!!"
 				echo "${ERROR}"
 				echo "Error in /tmp/xerr.tmp"
