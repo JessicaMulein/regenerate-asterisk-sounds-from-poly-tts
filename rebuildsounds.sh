@@ -1,8 +1,8 @@
 #!/bin/bash
 stringContain() { [ -z "$1" ] || { [ -z "${2##*$1*}" ] && [ -n "$2" ];};}
 
-DRYRUN=0
-GENSQL=1
+DRYRUN=0 # Change 0 to 1 to generate all promptss
+GENSQL=1 # Change 0 to 1 to produce an INSERT SQL in MYSQLFILE
 
 NODEBIN=/usr/bin/node
 POLLYJS=/opt/aws-nodejs/polly.js
@@ -92,7 +92,7 @@ while IFS= read -r SOUND ; do
 			else
 				if [ ${GENSQL} -eq 1 ]; then
 					printf -v SANITIZED "%q" "$TEXT"
-					echo "INSERT INTO \`recordings\` (\`displayname\`,\`filename\`,\`description\`,\`fcode\`,\`fcode_pass\`) values ('${FILENAME}','${MYSQLSOUNDPATH}/${FILENAME}.wav','${SANITIZED}',0,'en');" >> "${MYSQLFILE}"
+					echo "INSERT INTO \`recordings\` (\`displayname\`,\`filename\`,\`description\`,\`fcode\`,\`fcode_pass\`) values ('${FILENAME}','${MYSQLSOUNDPATH}/${FILENAME}','${SANITIZED}',0,'en');" >> "${MYSQLFILE}"
 				fi
 
 				echo "Generating ulaw file"
