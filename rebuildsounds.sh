@@ -1,10 +1,12 @@
 #!/bin/bash
 stringContain() { [ -z "$1" ] || { [ -z "${2##*$1*}" ] && [ -n "$2" ];};}
 
+DRYRUN=0
+GENSQL=1
+
 NODEBIN=/usr/bin/node
 POLLYJS=/opt/aws-nodejs/polly.js
 GENPATH=/opt/aws-nodejs/custom-asterisk
-GENSQL=1
 MYSQLFILE=/opt/aws-nodejs/custom-asterisk/recordings.sql
 MYSQLSOUNDPATH=en/custom
 
@@ -58,7 +60,11 @@ while IFS= read -r SOUND ; do
 
 			# exec with leading braces, but capture the output
 			echo -n "... ["
-			RESULT=$(${NODEBIN} ${POLLYJS} --mp3=${GENPATH}/${FILENAME}.mp3 --text="${TEXT}" --wav=${GENPATH}/${FILENAME} 2> /tmp/xerr.tmp)
+			if [ ${DRYRUN} -eq 0 ]; then
+				RESULT=$(${NODEBIN} ${POLLYJS} --mp3=${GENPATH}/${FILENAME}.mp3 --text="${TEXT}" --wav=${GENPATH}/${FILENAME} 2> /tmp/xerr.tmp)
+			else
+				RESULT="DRY RUN SUCCESS"
+			fi
 			ENDSTATUS=$?
 			if [ $ENDSTATUS -ne 0 ]; then
 				echo -n "ERROR"
@@ -86,13 +92,15 @@ while IFS= read -r SOUND ; do
 			else
 				if [ ${GENSQL} -eq 1 ]; then
 					printf -v SANITIZED "%q" "$TEXT"
-					echo "INSERT INTO `recordings` (\`displayname\`,\`filename\`,\`description\`,\`fcode\`,\`fcode_pass\`) values ('${FILENAME}','${MYSQLSOUNDPATH}/${FILENAME}.wav','${SANITIZED}',0,'');" >> "${MYSQLFILE}"
+					echo "INSERT INTO \`recordings\` (\`displayname\`,\`filename\`,\`description\`,\`fcode\`,\`fcode_pass\`) values ('${FILENAME}','${MYSQLSOUNDPATH}/${FILENAME}.wav','${SANITIZED}',0,'');" >> "${MYSQLFILE}"
 				fi
 
 				echo "Generating ulaw file"
 				INFILE="${GENPATH}/${FILENAME}.wav"
 				OUTFILE="${GENPATH}/${FILENAME}.ulaw"
-				asterisk -x "file convert ${INFILE} ${OUTFILE}"
+				if [ ${DRYRUN} -eq 0 ]; then
+					asterisk -x "file convert ${INFILE} ${OUTFILE}"
+				fi
 			fi
 		fi
 	fi
