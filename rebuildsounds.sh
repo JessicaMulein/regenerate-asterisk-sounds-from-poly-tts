@@ -8,7 +8,7 @@ NODEBIN=/usr/bin/node
 POLLYJS=/opt/aws-nodejs/polly.js
 GENPATH=/opt/aws-nodejs/custom-asterisk
 MYSQLFILE=/opt/aws-nodejs/custom-asterisk/recordings.sql
-MYSQLSOUNDPATH=en/custom
+MYSQLSOUNDPATH=custom
 
 if [ ${GENSQL} -eq 1 -a -f "${MYSQLFILE}" ]; then
 	echo "MySQL file already exists and will be overwritten"
@@ -92,7 +92,7 @@ while IFS= read -r SOUND ; do
 			else
 				if [ ${GENSQL} -eq 1 ]; then
 					printf -v SANITIZED "%q" "$TEXT"
-					echo "INSERT INTO \`recordings\` (\`displayname\`,\`filename\`,\`description\`,\`fcode\`,\`fcode_pass\`) values ('${FILENAME}','${MYSQLSOUNDPATH}/${FILENAME}.wav','${SANITIZED}',0,'');" >> "${MYSQLFILE}"
+					echo "INSERT INTO \`recordings\` (\`displayname\`,\`filename\`,\`description\`,\`fcode\`,\`fcode_pass\`) values ('${FILENAME}','${MYSQLSOUNDPATH}/${FILENAME}.wav','${SANITIZED}',0,'en');" >> "${MYSQLFILE}"
 				fi
 
 				echo "Generating ulaw file"
