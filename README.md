@@ -11,7 +11,10 @@ An additional polly.js has been added to generate files on demand from FreePBX u
 * Mass mysql import into recordings (https://mangolassi.it/topic/18903/mass-upload-sound-files-into-freepbx/2) using script placed in output dir
 * Create Language code record (or let it by uncommenting in SQL) in Admin for en_Salli
 * You will need to copy in a few (see the SKIPPED ones from the log output)
-* Fully generated Salli set at https://github.com/jessica-mulein/asterisk-custom-poly-sounds (minus SKIPPED)
+* Fully generated Salli set at https://github.com/jessica-mulein/asterisk-custom-poly-sounds
++ Fully automated deployment coming soon with alternatives branch
++ Core-Extra set coming soon
++ rebuildsounds moving into Makefile soon
 
 Expects /usr/bin/node
 
