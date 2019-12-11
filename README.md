@@ -10,6 +10,8 @@ An additional polly.js has been added to the original project to generate files 
 * Create Language code record (or let it by uncommenting in SQL) in Admin for en_Salli
 * You will need to copy in a few (see the SKIPPED ones from the log output)
 * Fully generated Salli set at https://github.com/jessica-mulein/asterisk-custom-poly-sounds (minus SKIPPED)
++ Fully automated Makefile deployment coming soon in alternatives branch
+- (Swap out entire sound file setup in seconds with newly tuned voice parameters)
 
 Expects /usr/bin/node
 
